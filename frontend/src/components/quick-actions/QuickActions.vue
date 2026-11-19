@@ -610,7 +610,10 @@ function onEnter(event: KeyboardEvent) {
 }
 
 async function doCmd() {
-	if (results.value.length === 1 && results.value[0].items.length === 1) {
+	// A selected command takes precedence over the single-result shortcut,
+	// otherwise e.g. "New task" + "Groceries" would open the matching project
+	// instead of creating a task.
+	if (selectedCmd.value === null && results.value.length === 1 && results.value[0].items.length === 1) {
 		const result = results.value[0]
 		doAction(result.type, result.items[0])
 		openTaskAfterCreate = false
